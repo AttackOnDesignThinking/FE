@@ -11,7 +11,7 @@ VALUES
 
 INSERT INTO public.user_locations (user_id, latitude, longitude)
 VALUES 
-  ('00000000-0000-0000-0000-000000000001', 40.7128, -74.0060);
+  ('00000000-0000-0000-0000-000000000001', 37.5547, 126.9706);
 
 -- Test User 2
 INSERT INTO auth.users (id, email, raw_user_meta_data)
@@ -24,7 +24,7 @@ VALUES
 
 INSERT INTO public.user_locations (user_id, latitude, longitude)
 VALUES 
-  ('00000000-0000-0000-0000-000000000002', 40.7138, -74.0055);
+  ('00000000-0000-0000-0000-000000000002', 37.5547, 126.9706);
 
 -- Generate more test users
 DO $$
@@ -57,7 +57,7 @@ BEGIN
     user_name := random_first || ' ' || random_last;
     
     -- Generate email
-    user_email := lower(random_first) || '.' || lower(random_last) || '@example.com';
+    user_email := lower(random_first) || '.' || lower(random_last) || i::TEXT || '@example.com';
     
     -- Determine gender for avatar (simplified)
     is_male := random() > 0.5;
@@ -68,9 +68,8 @@ BEGIN
                   '/' || (1 + floor(random() * 70)::INT)::TEXT || '.jpg';
     
     -- Generate random location near NYC
-    lat := 37.5665 + (random() * 0.02 - 0.01);
-    lng := 126.9780 + (random() * 0.02 - 0.01);
-
+    lat := 37.5547 + (random() * 0.015 - 0.0075); -- 약 ±1.5km
+    lng := 126.9706 + (random() * 0.015 - 0.0075); -- 약 ±1.5km
     
     -- Generate 2-4 random hobbies
     hobby_count := 2 + floor(random() * 3)::INT;

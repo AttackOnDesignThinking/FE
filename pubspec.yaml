@@ -18,6 +18,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   supabase_flutter: ^2.9.0
   web: any
+  webview_flutter: ^4.13.0
 dev_dependencies: 
   flutter_test: 
     sdk: flutter

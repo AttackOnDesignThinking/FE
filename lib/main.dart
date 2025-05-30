@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: NavigatorService.navigatorKey,
         debugShowCheckedModeBanner: false,
         routes: AppRoutes.routes,
-        initialRoute: AppRoutes.initial,
+        initialRoute: AppRoutes.mainMapScreen,
       );
     });
   }

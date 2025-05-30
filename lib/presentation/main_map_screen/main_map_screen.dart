@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import '../../core/services/naver_map_service.dart'; 
 
 import '../../core/app_export.dart';
 import '../../core/services/supabase_service.dart';
@@ -28,8 +30,8 @@ class _MainMapScreenState extends State<MainMapScreen> {
 
   // User location data
   final Map<String, dynamic> _userLocation = {
-    "latitude": 40.7128,
-    "longitude": -74.0060,
+    "latitude": 37.5547,   //서울역
+    "longitude": 126.9706,
   };
 
   @override
@@ -239,58 +241,18 @@ class _MainMapScreenState extends State<MainMapScreen> {
         color: AppTheme.surface,
       );
     }
-    
-    return Stack(
-      children: [
-        // Map background
-        CustomImageWidget(
-          imageUrl: "https://images.unsplash.com/photo-1569336415962-a4bd9f69c07a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
+
+    final controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadHtmlString(
+        NaverMapService.generateMapHtml(
+          clientId: '1u7j3pzwnv', // 여기에 네이버 API 콘솔에서 발급한 clientId 넣어
         ),
-        
-        // User location marker (blue dot)
-        Positioned(
-          left: 50.w - 8, // Center of screen
-          top: 50.h - 8,  // Center of screen
-          child: Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: AppTheme.primary,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 2),
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.shadowLight,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-          ),
-        ),
-        
-        // Map attribution
-        Positioned(
-          left: 8,
-          bottom: 8,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(204),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              'Map data',
-              style: AppTheme.lightTheme.textTheme.labelSmall?.copyWith(
-                color: AppTheme.textSecondary,
-              ),
-            ),
-          ),
-        ),
-      ],
+      );
+
+    return SizedBox.expand(
+      child: WebViewWidget(controller: controller),
     );
+
   }
 }
